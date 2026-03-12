@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://04dayihs0vg3"]
+
+[ext_resource type="Script" uid="uid://2npywt0nmamg" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://bwpybqx67iewh" path="res://player.tscn" id="2_0xm2m"]
+
+[node name="Main" type="Node2D" unique_id=116279124]
+script = ExtResource("1_ig7tw")
+player_scene = ExtResource("2_0xm2m")
+
+[node name="host_button" type="Button" parent="." unique_id=2067843194]
+offset_right = 158.0
+offset_bottom = 108.0
+text = "HOST"
+
+[node name="join_button" type="Button" parent="." unique_id=1637689733]
+offset_left = 1.0
+offset_top = 109.0
+offset_right = 159.0
+offset_bottom = 216.0
+disabled = true
+text = "JOIN"
+
+[node name="id_prompt" type="LineEdit" parent="." unique_id=782436101]
+offset_top = 216.0
+offset_right = 160.0
+offset_bottom = 247.0
+placeholder_text = "Lobby ID"
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1808314978]
+_spawnable_scenes = PackedStringArray("uid://bwpybqx67iewh")
+spawn_path = NodePath("..")
+
+[connection signal="pressed" from="host_button" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="join_button" to="." method="_on_join_button_pressed"]
+[connection signal="text_changed" from="id_prompt" to="." method="_on_id_prompt_text_changed"]
