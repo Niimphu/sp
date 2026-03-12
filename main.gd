@@ -14,7 +14,7 @@ func _ready():
 	print("Steam initialised:", Steam.steamInit(480, true))
 	Steam.initRelayNetworkAccess()
 	Steam.lobby_created.connect(_on_lobby_created)
-	Steam.lobby_joined.connect(_on_lobby_created)
+	Steam.lobby_joined.connect(_on_lobby_join)
 
 func host_lobby():
 	Steam.createLobby(Steam.LobbyType.LOBBY_TYPE_PUBLIC, 2)
