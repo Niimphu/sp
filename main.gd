@@ -34,6 +34,8 @@ func _on_lobby_created(result: int, lobby_id: int):
 		_add_player()
 		
 		print("Lobby created with ID: ", lobby_id)
+		var current_clipboard = DisplayServer.clipboard_get()
+		DisplayServer.clipboard_set(str(lobby_id))
 
 
 func _join_lobby(lobby_id: int):
@@ -72,9 +74,7 @@ func _on_host_button_pressed() -> void:
 
 
 func _on_id_prompt_text_changed(new_text: String) -> void:
-	print(new_text, new_text.length())
-	join_button.disabled = (new_text.length() >= 0)
-	print(join_button.disabled)
+	join_button.disabled = new_text.length() < 1
 
 
 func _on_join_button_pressed() -> void:
