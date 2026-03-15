@@ -3,9 +3,7 @@ extends CharacterBody2D
 @export var speed = 300.0
 
 func _enter_tree() -> void:
-	if !is_multiplayer_authority():
-		return
-	
+	set_multiplayer_authority(name.to_int())
 	
 
 func _physics_process(delta):
