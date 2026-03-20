@@ -1,0 +1,158 @@
+[gd_scene format=3 uid="uid://bemkqd7cymetg"]
+
+[ext_resource type="Script" uid="uid://d0ctdg4i4i010" path="res://main_menu.gd" id="1_06t4h"]
+[ext_resource type="Script" uid="uid://cxrrtdvyumwdv" path="res://lobby.gd" id="2_7vrkn"]
+[ext_resource type="PackedScene" uid="uid://bwpybqx67iewh" path="res://player.tscn" id="3_fu7sn"]
+
+[node name="Main Menu" type="Control" unique_id=439473899 node_paths=PackedStringArray("main", "play_menu", "play_button", "options_button", "quit_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_06t4h")
+main = NodePath("MarginContainer/Main")
+play_menu = NodePath("MarginContainer/PlayMenu")
+play_button = NodePath("MarginContainer/Main/VBoxContainer/PlayButton")
+options_button = NodePath("MarginContainer/Main/VBoxContainer/OptionsButton")
+quit_button = NodePath("MarginContainer/Main/VBoxContainer/QuitButton")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2043251750]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Main" type="Control" parent="MarginContainer" unique_id=1791148891]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Main" unique_id=142278159]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -50.5
+offset_right = 70.0
+offset_bottom = 50.5
+grow_vertical = 2
+
+[node name="PlayButton" type="Button" parent="MarginContainer/Main/VBoxContainer" unique_id=809566605]
+layout_mode = 2
+text = "Play"
+
+[node name="OptionsButton" type="Button" parent="MarginContainer/Main/VBoxContainer" unique_id=1891824468]
+layout_mode = 2
+text = "Options"
+
+[node name="QuitButton" type="Button" parent="MarginContainer/Main/VBoxContainer" unique_id=588868653]
+layout_mode = 2
+text = "Quit"
+
+[node name="PlayMenu" type="Control" parent="MarginContainer" unique_id=1885306535 node_paths=PackedStringArray("host_button", "id_prompt", "join_button")]
+layout_mode = 2
+script = ExtResource("2_7vrkn")
+player_scene = ExtResource("3_fu7sn")
+host_button = NodePath("SetupMenu/HBoxContainer/HostButton")
+id_prompt = NodePath("SetupMenu/HBoxContainer/VBoxContainer/IDPrompt")
+join_button = NodePath("SetupMenu/HBoxContainer/VBoxContainer/JoinButton")
+
+[node name="SetupMenu" type="Control" parent="MarginContainer/PlayMenu" unique_id=1998449610]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PlayMenu/SetupMenu" unique_id=1373856455]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 404.0
+offset_top = 247.0
+offset_right = 660.0
+offset_bottom = 313.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HostButton" type="Button" parent="MarginContainer/PlayMenu/SetupMenu/HBoxContainer" unique_id=893110273]
+layout_mode = 2
+text = "Host"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PlayMenu/SetupMenu/HBoxContainer" unique_id=1644252523]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="IDPrompt" type="LineEdit" parent="MarginContainer/PlayMenu/SetupMenu/HBoxContainer/VBoxContainer" unique_id=194580878]
+layout_mode = 2
+placeholder_text = "Lobby ID"
+
+[node name="JoinButton" type="Button" parent="MarginContainer/PlayMenu/SetupMenu/HBoxContainer/VBoxContainer" unique_id=1907679642]
+layout_mode = 2
+disabled = true
+text = "Join"
+
+[node name="LobbyScreen" type="Control" parent="MarginContainer/PlayMenu" unique_id=1966084748]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PlayMenu/LobbyScreen" unique_id=1249989294]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlayerOne" type="PanelContainer" parent="MarginContainer/PlayMenu/LobbyScreen/HBoxContainer" unique_id=381638477]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PlayMenu/LobbyScreen/HBoxContainer/PlayerOne" unique_id=1558595203]
+layout_mode = 2
+
+[node name="Role" type="Label" parent="MarginContainer/PlayMenu/LobbyScreen/HBoxContainer/PlayerOne/VBoxContainer" unique_id=1817097774]
+layout_mode = 2
+text = "Player One"
+
+[node name="Name" type="Label" parent="MarginContainer/PlayMenu/LobbyScreen/HBoxContainer/PlayerOne/VBoxContainer" unique_id=678352576]
+layout_mode = 2
+text = "None"
+
+[node name="JoinButton" type="Button" parent="MarginContainer/PlayMenu/LobbyScreen/HBoxContainer/PlayerOne/VBoxContainer" unique_id=1839786967]
+layout_mode = 2
+text = "Join"
+
+[node name="PlayerTwo" type="PanelContainer" parent="MarginContainer/PlayMenu/LobbyScreen/HBoxContainer" unique_id=1445070757]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PlayMenu/LobbyScreen/HBoxContainer/PlayerTwo" unique_id=187569711]
+layout_mode = 2
+
+[node name="Role" type="Label" parent="MarginContainer/PlayMenu/LobbyScreen/HBoxContainer/PlayerTwo/VBoxContainer" unique_id=746876035]
+layout_mode = 2
+text = "Player Two"
+
+[node name="Name" type="Label" parent="MarginContainer/PlayMenu/LobbyScreen/HBoxContainer/PlayerTwo/VBoxContainer" unique_id=202612037]
+layout_mode = 2
+text = "None"
+
+[node name="JoinButton" type="Button" parent="MarginContainer/PlayMenu/LobbyScreen/HBoxContainer/PlayerTwo/VBoxContainer" unique_id=906320010]
+layout_mode = 2
+text = "Join"
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="MarginContainer/PlayMenu" unique_id=2021904831]
+_spawnable_scenes = PackedStringArray("uid://bwpybqx67iewh")
+spawn_path = NodePath("../../..")
+
+[connection signal="pressed" from="MarginContainer/Main/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Main/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Main/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="MarginContainer/PlayMenu/SetupMenu/HBoxContainer/HostButton" to="MarginContainer/PlayMenu" method="_on_host_button_pressed"]
+[connection signal="text_changed" from="MarginContainer/PlayMenu/SetupMenu/HBoxContainer/VBoxContainer/IDPrompt" to="MarginContainer/PlayMenu" method="_on_id_prompt_text_changed"]
+[connection signal="pressed" from="MarginContainer/PlayMenu/SetupMenu/HBoxContainer/VBoxContainer/JoinButton" to="MarginContainer/PlayMenu" method="_on_join_button_pressed"]
