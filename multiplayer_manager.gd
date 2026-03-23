@@ -46,7 +46,10 @@ func host_lobby():
 
 func _try_create_code():
 	pending_code = generate_code()
-	
+	_check_code()
+
+
+func _check_code():
 	Steam.addRequestLobbyListStringFilter(
 		"join_code",
 		pending_code,
@@ -58,17 +61,14 @@ func _try_create_code():
 
 func _on_lobby_match_list(lobbies: Array):
 	if is_joining:
+		print("Attempt join")
 		attempt_join_lobby(lobbies)
 	else:
+		print("Attempt create")
 		attempt_create_join_code(lobbies)
 
 
 func attempt_join_lobby(lobbies: Array):
-	#debug
-	for lobby in lobbies:
-		print("---- Lobby ----")
-		print("ID: ", lobby)
-	
 	if lobbies.size() == 0:
 		print("Lobby not found")
 	else:
@@ -76,9 +76,7 @@ func attempt_join_lobby(lobbies: Array):
 
 
 func attempt_create_join_code(lobbies: Array):
-	var limit = 1 if creating_lobby else 0
-	
-	if lobbies.size() > limit:
+	if (creating_lobby and lobbies.size() > 1) or lobbies.size() > 0:
 		code_attempts += 1
 		if code_attempts >= MAX_CODE_ATTEMPTS:
 			code_attempts = 0
@@ -106,14 +104,18 @@ func _on_lobby_created(result: int, lobby_id: int):
 	if result == Steam.Result.RESULT_OK:
 		self.lobby_id = lobby_id
 		Steam.setLobbyData(lobby_id, "join_code", pending_code)
+		
 		creating_lobby = true
 		
-		_try_create_code()
+		_check_code()
 		await code_created
+		join_code = pending_code
+		Steam.setLobbyData(lobby_id, "join_code", pending_code)
 		
 		if not creating_lobby:
 			return
 		creating_lobby = false
+		
 		
 		peer = SteamMultiplayerPeer.new()
 		peer.server_relay = true
@@ -121,8 +123,9 @@ func _on_lobby_created(result: int, lobby_id: int):
 		
 		multiplayer.multiplayer_peer = peer
 		
-		join_code = pending_code
 		pending_code = ""
+		var check = Steam.getLobbyData(lobby_id, "join_code")
+		print("JOIN CODE SET:", join_code, " | READ BACK:", check)
 		print("Lobby created with ID: ", lobby_id, " join code: ", join_code)
 	else:
 		print("Steam failge: createLobby")
@@ -134,13 +137,12 @@ func join_lobby(_join_code: String):
 	
 	is_joining = true
 	
-	#return debug_lobby_list()
-	
 	join_code = _join_code.strip_edges().to_upper()
+	print(join_code)
 	
 	Steam.addRequestLobbyListStringFilter(
 		"join_code",
-		_join_code,
+		join_code,
 		Steam.LOBBY_COMPARISON_EQUAL)
 	
 	Steam.requestLobbyList()
