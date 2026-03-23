@@ -57,7 +57,22 @@ func _try_create_code():
 
 
 func _on_lobby_match_list(lobbies: Array):
+	if is_joining:
+		attempt_join_lobby(lobbies)
+	else:
+		attempt_create_join_code(lobbies)
+
+
+func attempt_join_lobby(lobbies: Array):
+	if lobbies.size() < 1:
+		print("Lobby not found")
+	else:
+		Steam.joinLobby(lobbies[0])
+
+
+func attempt_create_join_code(lobbies: Array):
 	var limit = 1 if creating_lobby else 0
+	
 	if lobbies.size() > limit:
 		code_attempts += 1
 		if code_attempts >= MAX_CODE_ATTEMPTS:
@@ -108,9 +123,19 @@ func _on_lobby_created(result: int, lobby_id: int):
 		print("Steam failge: createLobby")
 
 
-func join_lobby(lobby_id: String):
+func join_lobby(_join_code: String):
+	if lobby_id:
+		return
+	
 	is_joining = true
-	Steam.joinLobby(lobby_id)
+	join_code = _join_code.strip_edges().to_upper()
+	
+	Steam.addRequestLobbyListStringFilter(
+		"join_code",
+		_join_code,
+		Steam.LOBBY_COMPARISON_EQUAL)
+	
+	Steam.requestLobbyList()
 
 
 func _on_lobby_join(lobby_id: int, permissions: int, locked: bool, response: int):
