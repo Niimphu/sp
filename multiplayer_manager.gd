@@ -53,6 +53,7 @@ func _try_create_code():
 		Steam.LobbyComparison.LOBBY_COMPARISON_EQUAL
 	)
 	
+	Steam.addRequestLobbyListResultCountFilter(1)
 	Steam.requestLobbyList()
 
 
@@ -64,7 +65,7 @@ func _on_lobby_match_list(lobbies: Array):
 
 
 func attempt_join_lobby(lobbies: Array):
-	if lobbies.size() < 1:
+	if lobbies.size() == 0:
 		print("Lobby not found")
 	else:
 		Steam.joinLobby(lobbies[0])
@@ -135,6 +136,7 @@ func join_lobby(_join_code: String):
 		_join_code,
 		Steam.LOBBY_COMPARISON_EQUAL)
 	
+	Steam.addRequestLobbyListResultCountFilter(1)
 	Steam.requestLobbyList()
 
 
@@ -142,14 +144,21 @@ func _on_lobby_join(lobby_id: int, permissions: int, locked: bool, response: int
 	if !is_joining:
 		return
 	
+	if response != Steam.Result.RESULT_OK:
+		print("Failed to join lobby")
+		is_joining = false
+		return
+	
 	self.lobby_id = lobby_id
+	is_joining = false
+	
 	peer = SteamMultiplayerPeer.new()
 	peer.server_relay = true
 	peer.create_client(Steam.getLobbyOwner(lobby_id))
+	
 	multiplayer.multiplayer_peer = peer
 	
-	is_joining = false
-	print("joining... ", lobby_id)
+	print("Joined lobby: ", lobby_id)
 
 
 func _leave_lobby():
