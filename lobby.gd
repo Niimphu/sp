@@ -7,11 +7,14 @@ extends Control
 @export var join_button: Button
 
 
+func _ready() -> void:
+	multiplayer.peer_connected.connect(_on_player_join_lobby)
+
+
 func _add_player(id: int = 1):
 	var player = player_scene.instantiate()
 	player.name = str(id)
 	call_deferred("add_child", player)
-	multiplayer.peer_connected.connect(_on_player_join_lobby)
 
 
 func _on_player_join_lobby(id: int):
