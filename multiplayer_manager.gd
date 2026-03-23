@@ -53,7 +53,6 @@ func _try_create_code():
 		Steam.LobbyComparison.LOBBY_COMPARISON_EQUAL
 	)
 	
-	Steam.addRequestLobbyListResultCountFilter(1)
 	Steam.requestLobbyList()
 
 
@@ -133,9 +132,10 @@ func join_lobby(_join_code: String):
 	if lobby_id:
 		return
 	
-	return debug_lobby_list()
-	
 	is_joining = true
+	
+	#return debug_lobby_list()
+	
 	join_code = _join_code.strip_edges().to_upper()
 	
 	Steam.addRequestLobbyListStringFilter(
@@ -143,12 +143,10 @@ func join_lobby(_join_code: String):
 		_join_code,
 		Steam.LOBBY_COMPARISON_EQUAL)
 	
-	Steam.addRequestLobbyListResultCountFilter(1)
 	Steam.requestLobbyList()
 
 
 func debug_lobby_list():
-	is_joining = false
 	Steam.addRequestLobbyListStringFilter(
 		"join_code",
 		"",
