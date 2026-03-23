@@ -124,6 +124,7 @@ func _on_lobby_join(lobby_id: int, permissions: int, locked: bool, response: int
 	multiplayer.multiplayer_peer = peer
 	
 	is_joining = false
+	print("joining... ", lobby_id)
 
 
 func _leave_lobby():
