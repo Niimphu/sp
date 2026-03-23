@@ -65,6 +65,11 @@ func _on_lobby_match_list(lobbies: Array):
 
 
 func attempt_join_lobby(lobbies: Array):
+	#debug
+	for lobby in lobbies:
+		print("---- Lobby ----")
+		print("ID: ", lobby)
+	
 	if lobbies.size() == 0:
 		print("Lobby not found")
 	else:
@@ -128,6 +133,8 @@ func join_lobby(_join_code: String):
 	if lobby_id:
 		return
 	
+	return debug_lobby_list()
+	
 	is_joining = true
 	join_code = _join_code.strip_edges().to_upper()
 	
@@ -137,6 +144,17 @@ func join_lobby(_join_code: String):
 		Steam.LOBBY_COMPARISON_EQUAL)
 	
 	Steam.addRequestLobbyListResultCountFilter(1)
+	Steam.requestLobbyList()
+
+
+func debug_lobby_list():
+	is_joining = false
+	Steam.addRequestLobbyListStringFilter(
+		"join_code",
+		"",
+		Steam.LobbyComparison.LOBBY_COMPARISON_NOT_EQUAL
+	)
+	
 	Steam.requestLobbyList()
 
 
