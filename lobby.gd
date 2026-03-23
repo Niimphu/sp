@@ -34,4 +34,4 @@ func _on_id_prompt_text_changed(new_text: String) -> void:
 
 
 func _on_join_button_pressed() -> void:
-	MultiplayerManager.join_lobby(id_prompt.text.to_int())
+	MultiplayerManager.join_lobby(id_prompt.text)

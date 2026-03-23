@@ -108,7 +108,7 @@ func _on_lobby_created(result: int, lobby_id: int):
 		print("Steam failge: createLobby")
 
 
-func join_lobby(lobby_id: int):
+func join_lobby(lobby_id: String):
 	is_joining = true
 	Steam.joinLobby(lobby_id)
 
