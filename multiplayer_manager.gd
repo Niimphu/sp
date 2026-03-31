@@ -12,6 +12,10 @@ var is_joining: bool = false
 var creating_lobby: bool = false
 var code_attempts: int = 0
 
+var player_one: int = 0
+var player_two: int = 0
+
+
 enum { FAIL, SUCCESS }
 signal code_created(status)
 signal player_joined_lobby(player)
@@ -25,6 +29,7 @@ func _ready():
 	Steam.lobby_created.connect(_on_lobby_created)
 	Steam.lobby_joined.connect(_on_lobby_join)
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
+	multiplayer.peer_connected.connect(_on_player_join_lobby)
 	
 	code_created.connect(_on_code_created)
 
@@ -61,10 +66,8 @@ func _check_code():
 
 func _on_lobby_match_list(lobbies: Array):
 	if is_joining:
-		print("Attempt join")
 		attempt_join_lobby(lobbies)
 	else:
-		print("Attempt create")
 		attempt_create_join_code(lobbies)
 
 
@@ -179,7 +182,25 @@ func _on_lobby_join(lobby_id: int, permissions: int, locked: bool, response: int
 	print("Joined lobby: ", lobby_id)
 
 
+func _on_player_join_lobby(id: int):
+	pass
+
+
 func _leave_lobby():
 	Steam.leaveLobby(lobby_id)
 	lobby_id = 0
 	join_code = ""
+
+
+func join_player_one(id: int):
+	if player_one:
+		pass
+	else:
+		player_one = id
+
+
+func join_player_two(id: int):
+	if player_two:
+		pass
+	else:
+		player_two = id

@@ -4,6 +4,17 @@
 [ext_resource type="Script" uid="uid://cxrrtdvyumwdv" path="res://lobby.gd" id="2_7vrkn"]
 [ext_resource type="PackedScene" uid="uid://bwpybqx67iewh" path="res://player.tscn" id="3_fu7sn"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fu7sn"]
+bg_color = Color(0.1444, 0.1672, 0.19, 0.21568628)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_fu7sn"]
+properties/0/path = NodePath("/root/MultiplayerManager:player_one")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("/root/MultiplayerManager:player_two")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [node name="Main Menu" type="Control" unique_id=439473899 node_paths=PackedStringArray("main", "play_menu", "setup_menu", "lobby_screen", "play_button", "options_button", "quit_button")]
 layout_mode = 3
 anchors_preset = 15
@@ -57,13 +68,18 @@ text = "Options"
 layout_mode = 2
 text = "Quit"
 
-[node name="PlayMenu" type="Control" parent="MarginContainer" unique_id=1885306535 node_paths=PackedStringArray("host_button", "id_prompt", "join_button")]
+[node name="PlayMenu" type="Control" parent="MarginContainer" unique_id=1885306535 node_paths=PackedStringArray("host_button", "id_prompt", "join_button", "log", "setup_menu", "lobby_screen", "player_one_label", "player_two_label")]
 layout_mode = 2
 script = ExtResource("2_7vrkn")
 player_scene = ExtResource("3_fu7sn")
 host_button = NodePath("SetupMenu/HBoxContainer/HostButton")
 id_prompt = NodePath("SetupMenu/HBoxContainer/VBoxContainer/IDPrompt")
 join_button = NodePath("SetupMenu/HBoxContainer/VBoxContainer/JoinButton")
+log = NodePath("LobbyScreen/VBoxContainer/Log")
+setup_menu = NodePath("SetupMenu")
+lobby_screen = NodePath("LobbyScreen")
+player_one_label = NodePath("LobbyScreen/HBoxContainer/PlayerOne/VBoxContainer/Name")
+player_two_label = NodePath("LobbyScreen/HBoxContainer/PlayerTwo/VBoxContainer/Name")
 
 [node name="SetupMenu" type="Control" parent="MarginContainer/PlayMenu" unique_id=1998449610]
 anchors_preset = 0
@@ -166,9 +182,20 @@ text = "None"
 layout_mode = 2
 text = "Join"
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="MarginContainer/PlayMenu" unique_id=2021904831]
-_spawnable_scenes = PackedStringArray("uid://bwpybqx67iewh")
-spawn_path = NodePath("../../..")
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PlayMenu/LobbyScreen" unique_id=76998258]
+layout_mode = 0
+offset_left = -523.0
+offset_top = 159.0
+offset_right = -267.0
+offset_bottom = 315.0
+
+[node name="Log" type="RichTextLabel" parent="MarginContainer/PlayMenu/LobbyScreen/VBoxContainer" unique_id=1499490250]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_fu7sn")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="MarginContainer/PlayMenu" unique_id=1785330299]
+replication_config = SubResource("SceneReplicationConfig_fu7sn")
 
 [connection signal="pressed" from="MarginContainer/Main/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="MarginContainer/Main/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
@@ -176,3 +203,5 @@ spawn_path = NodePath("../../..")
 [connection signal="pressed" from="MarginContainer/PlayMenu/SetupMenu/HBoxContainer/HostButton" to="MarginContainer/PlayMenu" method="_on_host_button_pressed"]
 [connection signal="text_changed" from="MarginContainer/PlayMenu/SetupMenu/HBoxContainer/VBoxContainer/IDPrompt" to="MarginContainer/PlayMenu" method="_on_id_prompt_text_changed"]
 [connection signal="pressed" from="MarginContainer/PlayMenu/SetupMenu/HBoxContainer/VBoxContainer/JoinButton" to="MarginContainer/PlayMenu" method="_on_join_button_pressed"]
+[connection signal="pressed" from="MarginContainer/PlayMenu/LobbyScreen/HBoxContainer/PlayerOne/VBoxContainer/JoinButton" to="MarginContainer/PlayMenu" method="_on_p1_join_button_pressed"]
+[connection signal="pressed" from="MarginContainer/PlayMenu/LobbyScreen/HBoxContainer/PlayerTwo/VBoxContainer/JoinButton" to="MarginContainer/PlayMenu" method="_on_p2_join_button_pressed"]
